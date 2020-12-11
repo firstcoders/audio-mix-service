@@ -4,4 +4,5 @@
 ### But not these ###
 !.gitignore
 !LICENSE.md
+!3RD-PARTY-LICENSES.txt
 !README.md
