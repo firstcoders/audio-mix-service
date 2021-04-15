@@ -1,34 +1,18 @@
 # sound.ws/audio-service
 
-You can find the documentation [here](https://github.com/sound-ws/stems-player-documentation/blob/master/audio-service-self-hosted.md).
+## Development
 
-## Quick Start
+## Testing
+
+Run
 
 ```bash
-  AWS_PROFILE=default npx @sound-ws/audio-mix-service deploy \
-    --region eu-west-2 \
-    --stage example \
-    --secret 94961ef040d60996b3668577b26a2231e958815a35be22dfd493b02a2c59cd59 \
-    --log-level debug \
-    --ffmpeg-layer-arn arn:aws:lambda:eu-west-2:715905027390:layer:ffmpeg:46 \
-    -y
+yarn test
+yarn test:e2e
 ```
 
-## DEFAULT OPTIONS
+## Deploying
 
-todo
-
-- CORS headers?
-- create ffmpeg lgpl build
-- describe dependencies for deployment (AWS permissions required for deploying serverless functions)
-- STAGE=development cannot be used
-
-## Dependencies
-
-The installer depends on `npm`, `serverless framework` (can be invoked using npm), `bash` - or `docker`. In addition [this Lambda Layer](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~ffmpeg-lambda-layer) needs to be pre-installed in the AWS environment the audio-service is to be deployed into.
-
-## Build Artifact
-
-Describe
-
-- building webpack dist files + serverless-dist + package-dist
+1. `cp .env.dist .env` and fill out the values.
+2. Run `make build`
+3. Run `make deploy` (with appropriate AWS credentials set as envs)
