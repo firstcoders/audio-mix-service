@@ -1,4 +1,4 @@
-# sound.ws/audio-service
+# sound.ws/audio-mix-service
 
 ## Development
 
