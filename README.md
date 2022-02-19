@@ -1,18 +1,12 @@
-# sound.ws/audio-mix-service
+# @sound-ws/audio-mix-service
 
-## Development
+A serverless microservice to allow merging of multiple audio files into one.
 
-## Testing
+## Licence
 
-Run
+Copyright 2019-2022 Sound Web Services LTD - All Rights Reserved
 
-```bash
-yarn test
-yarn test:e2e
-```
+This software package is available under a commercial license.
 
-## Deploying
-
-1. `cp .env.dist .env` and fill out the values.
-2. Run `make build`
-3. Run `make deploy` (with appropriate AWS credentials set as envs)
+Unauthorized distribution or use of this software, via any medium is strictly prohibited.
+Proprietary and confidential.
