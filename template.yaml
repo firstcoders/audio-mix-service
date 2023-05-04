@@ -1,0 +1,270 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  A microservice to give the Sound Web Services Stems Player mix and download powers.
+
+  Check out https://github.com/sound-ws/stems-player-documentation/wiki
+  for more information.
+
+Conditions:
+  CreateBucket: !Not [!Equals [!Ref ExistingBucket, true]]
+
+Parameters:
+  # todo more validation
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html
+  LogLevel:
+    Type: String
+    Description: The log level
+    Default: 'error'
+    AllowedValues:
+      - debug
+      - info
+      - error
+  StageName:
+    Type: String
+    Description: The api gateway stage name
+    Default: 'prd'
+    AllowedValues:
+      - dev
+      - uat
+      - prd
+  SwsSecret:
+    Type: String
+    Description: The shared JWT secret used to authenticate to the service.
+    NoEcho: true
+    # MinLength: 16
+    # MaxLength: 32
+  AudioToolsLayerArn:
+    Type: String
+    Description: The arn of the lambda layer containing ffmpeg & lame static binaries
+  BucketName:
+    Type: String
+    Description: The name of the audio Bucket in which the mixed audio is temporarily placed. (A random id will be added as a suffix.)
+    MinLength: 5
+  ExistingBucket:
+    Type: String
+    Description: Whether to create the audio bucket
+    AllowedValues:
+      - true
+      - false
+    Default: 'false'
+  CORSAllowedOrigins:
+    Type: String
+    Description: The allowed origin header value to return
+    Default: ''
+
+Globals:
+  # https://github.com/aws/serverless-application-model/issues/191
+  # https://github.com/aws/chalice/issues/1655
+  Api:
+    OpenApiVersion: 3.0.1
+  Function:
+    Timeout: 3
+    Runtime: nodejs14.x
+    MemorySize: 256
+    CodeUri: src
+    Environment:
+      Variables:
+        LOG_LEVEL: !Ref LogLevel
+        AUDIO_BUCKET_NAME: !Ref BucketName
+        DYNAMODB_TABLE_JOB: !Ref JobTable
+        SWS_SECRET: !Ref SwsSecret
+        SQS_JOB_QUEUE_URL: !Ref JobQueue
+        CORS_ALLOWED_ORIGIN: !Ref CORSAllowedOrigins
+
+Resources:
+  ServiceApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref StageName
+      # https://github.com/aws/serverless-application-model/releases/tag/v1.46.0
+      # https://github.com/aws/serverless-application-model/pull/2298
+      ApiKeySourceType: AUTHORIZER
+      Auth:
+        DefaultAuthorizer: BearerTokenAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: false
+        Authorizers:
+          BearerTokenAuthorizer:
+            FunctionArn: !GetAtt AuthBearerTokenFunction.Arn
+            ReauthorizeEvery: 300
+          SignedUrlAuthorizer:
+            FunctionPayloadType: REQUEST
+            FunctionArn: !GetAtt AuthSignedUrlFunction.Arn
+            ReauthorizeEvery: 3600
+            Identity:
+              QueryStrings:
+                - token
+      Cors:
+        AllowMethods: "'POST, GET'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        MaxAge: "'86400'"
+      # DefinitionBody:
+      #   Fn::Transform:
+      #     Name: AWS::Include
+      #     Parameters:
+      #       Location: openapi.yaml
+      GatewayResponses:
+        DEFAULT_4XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Expose-Headers: "'*'"
+              Access-Control-Allow-Origin: "'*'"
+        DEFAULT_5XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Expose-Headers: "'*'"
+              Access-Control-Allow-Origin: "'*'"
+
+  # ********************************* Functions *********************************
+
+  AuthBearerTokenFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: Authorizer using a bearer token contained in the authorization header
+      Handler: index.authorizeBearerToken
+
+  AuthSignedUrlFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: Authorize a token provided as a query param against specific claims
+      Handler: index.authorizeSignedUrl
+
+  CreateMixFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Create an audio mix
+      Handler: index.createAudioMix
+      Events:
+        Post:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ServiceApi
+            Path: /
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref JobTable
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt JobQueue.QueueName
+        - S3ReadPolicy:
+            BucketName: !Ref BucketName
+
+  GetStatusFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Gets the status of the audio mix job
+      Handler: index.getAudioMixStatus
+      Events:
+        Get:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ServiceApi
+            Path: /status/{uuid}
+            Method: get
+            Auth:
+              Authorizer: SignedUrlAuthorizer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref JobTable
+
+  MixAudioFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Creates the mixed wav file
+      Handler: index.consumeJob
+      MemorySize: 1024
+      Timeout: 120
+      Events:
+        GetM3u8:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt JobQueue.Arn
+            BatchSize: 1
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref JobTable
+        - SQSPollerPolicy:
+            QueueName: !GetAtt JobQueue.QueueName
+        - S3CrudPolicy:
+            BucketName: !Ref BucketName
+      Layers:
+        - !Ref AudioToolsLayerArn
+      Environment:
+        Variables:
+          FFMPEG_BIN_PATH: /opt/bin/ffmpeg
+          LAME_BIN_PATH: /opt/bin/lame
+          SOX_BIN_PATH: /opt/bin/sox
+          FFPROBE_BIN_PATH: /opt/bin/ffprobe
+
+  # ********************************* General Resources *********************************
+  JobTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Delete
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: uuid
+          AttributeType: S
+        - AttributeName: MD5OfMessageBody
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+      KeySchema:
+        - AttributeName: uuid
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: MD5OfMessageBodyIndex
+          KeySchema:
+            - AttributeName: MD5OfMessageBody
+              KeyType: HASH
+            - AttributeName: status
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+
+  JobQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 300 # 5 minutes - Pin to max processing time
+      MessageRetentionPeriod: 3600 # 1 hour
+
+  AudioBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Condition: CreateBucket
+    Properties:
+      # https://stackoverflow.com/questions/54897459/how-to-set-semi-random-name-for-s3-bucket-using-cloud-formation
+      BucketName: !Ref BucketName
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfterNDays
+            Status: 'Enabled'
+            ExpirationInDays: 1
+      # TODO review
+      # https://www.serverless.com/blog/cors-api-gateway-survival-guide
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - '*'
+            AllowedMethods:
+              - GET
+              - HEAD
+            AllowedHeaders:
+              - '*'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+Outputs:
+  ApiId:
+    Description: 'The API Gateway id'
+    Value: !Ref ServiceApi
+  ServiceApi:
+    Description: 'API Gateway endpoint URL'
+    Value: !Sub 'https://${ServiceApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/'
