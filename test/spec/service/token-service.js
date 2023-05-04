@@ -1,5 +1,5 @@
 import assert from 'assert';
-import TokenService from '../../../src/services/token-service';
+import TokenService from '../../../src/service/token-service';
 
 describe('token-service', async () => {
   it('generates a token with claims and options', async () => {

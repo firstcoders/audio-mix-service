@@ -1,6 +1,6 @@
 import assert from 'assert';
 import TokenAuthorizer from '../../../src/authorizer/token-authorizer';
-import TokenService from '../../../src/services/token-service';
+import TokenService from '../../../src/service/token-service';
 
 const logger = { debug: () => {}, error: () => {}, info: () => {} };
 
