@@ -66,7 +66,7 @@ module.exports = {
           output: {
             comments: false,
             preamble:
-              '// Copyright 2019-2023 First Coders LTD - All Rights Reserved\n// This software package is available under a commercial license.\n// License at LICENCE.txt',
+              '// Copyright 2019-2023 First Coders LTD - All Rights Reserved\n// This software package is available under a commercial license.\n// License at LICENCE',
           },
           // extractComments: {
           //   condition: /^\**!|@preserve|@license|@cc_on/i,
