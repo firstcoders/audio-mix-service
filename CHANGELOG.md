@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-beta.7](https://github.com/sound-ws/audio-mix-service/compare/@soundws/audio-mix-service@3.0.0-beta.6...@soundws/audio-mix-service@3.0.0-beta.7) (2023-05-09)
+
+
+### Bug Fixes
+
+* **audio-mix-service:** fix for bundling esm dependency. Set babel to module auto ([3a28002](https://github.com/sound-ws/audio-mix-service/commit/3a28002ff6e15453e86ae39882c764287baf612b))
+
+
+
+
+
 # [3.0.0-beta.6](https://github.com/sound-ws/audio-mix-service/compare/@soundws/audio-mix-service@3.0.0-beta.5...@soundws/audio-mix-service@3.0.0-beta.6) (2023-05-08)
 
 **Note:** Version bump only for package @soundws/audio-mix-service
