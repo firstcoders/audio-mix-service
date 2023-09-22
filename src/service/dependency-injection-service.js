@@ -124,7 +124,7 @@ class DependencyInjection {
               // not sure why this is needed, but for some reason som signed urls didn't have the correct region
               region: process.env.AWS_DEFAULT_REGION,
             }
-          : {}
+          : {},
       );
     }
 

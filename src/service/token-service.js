@@ -56,7 +56,7 @@ class TokenService {
         issuer,
         algorithm,
         ...options,
-      }
+      },
     );
   }
 

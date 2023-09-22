@@ -50,7 +50,7 @@ module.exports = (url, event) => {
 
   const hostAndPath = `${host}/${basepath.replace(/\/$/, '')}/${url.replace(/^\//, '')}`.replace(
     /\/+/g,
-    '/'
+    '/',
   );
 
   return `${protocol}://${hostAndPath}`;

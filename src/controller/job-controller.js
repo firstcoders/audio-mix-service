@@ -87,7 +87,7 @@ class JobController {
             error,
           });
         }
-      })
+      }),
     );
 
     log.debug('end');

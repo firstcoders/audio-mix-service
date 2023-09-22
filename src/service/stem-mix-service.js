@@ -40,8 +40,8 @@ class StemMixService {
       sources.map((source) =>
         // return ['-ignore_length', '1', '-i', source.src];
         // ignore_length causes buzz issue. A newer ffmpeg build git master: built on 20210225 https://johnvansickle.com/ffmpeg/ saved the day
-        ['-i', source.src]
-      )
+        ['-i', source.src],
+      ),
     );
 
     const weights = sources.map((source) => source.volume).join(' ');
@@ -62,7 +62,7 @@ class StemMixService {
 
     options = [].concat.apply(
       options,
-      metadata.map(({ key, value }) => ['-metadata', quote(`${key}=${value}`)])
+      metadata.map(({ key, value }) => ['-metadata', quote(`${key}=${value}`)]),
     );
 
     options = options.concat(['-c:a', 'pcm_s24le', '-ac', '2', '-ar', '48000'], saveAs);

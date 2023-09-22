@@ -190,7 +190,7 @@ class AudioController {
       {
         issuer: 'api.sound.ws',
         audience: 'api.sound.ws',
-      }
+      },
     );
   }
 }
