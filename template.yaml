@@ -268,3 +268,17 @@ Outputs:
   ServiceApi:
     Description: 'API Gateway endpoint URL'
     Value: !Sub 'https://${ServiceApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/'
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: soundws-audio-mix-service
+    Description: >
+      A serverless microservice that mixes/merges multiple audio files into a single file with different volumes for each audio file.
+    Author: Team First Coders
+    ReadmeUrl: README.md
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: LICENSE
+    Labels: ['layer', 'lambda', 'serverless', 'ffmpeg', 'amix']
+    HomePageUrl: https://github.com/sound-ws/audio-mix-service
+    SourceCodeUrl: https://github.com/sound-ws/audio-mix-service
+    SemanticVersion: 1.0.0 # overwritten by sam publish cli command
