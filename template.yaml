@@ -47,11 +47,14 @@ Parameters:
     AllowedValues:
       - true
       - false
-    Default: 'false'
+    Default: false
   CORSAllowedOrigins:
     Type: String
     Description: The allowed origin header value to return
     Default: ''
+  AuthorizerArn:
+    Type: String
+    Description: The ARN of a lambda authorizer
 
 Globals:
   # https://github.com/aws/serverless-application-model/issues/191
@@ -60,9 +63,8 @@ Globals:
     OpenApiVersion: 3.0.1
   Function:
     Timeout: 3
-    Runtime: nodejs18.x
+    Runtime: nodejs16.x
     MemorySize: 256
-    CodeUri: src
     Environment:
       Variables:
         LOG_LEVEL: !Ref LogLevel
@@ -85,7 +87,7 @@ Resources:
         AddDefaultAuthorizerToCorsPreflight: false
         Authorizers:
           BearerTokenAuthorizer:
-            FunctionArn: !GetAtt AuthBearerTokenFunction.Arn
+            FunctionArn: !Ref AuthorizerArn
             ReauthorizeEvery: 300
           SignedUrlAuthorizer:
             FunctionPayloadType: REQUEST
@@ -118,23 +120,31 @@ Resources:
 
   # ********************************* Functions *********************************
 
-  AuthBearerTokenFunction:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      Description: Authorizer using a bearer token contained in the authorization header
-      Handler: index.authorizeBearerToken
-
   AuthSignedUrlFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: Authorize a token provided as a query param against specific claims
-      Handler: index.authorizeSignedUrl
+      Handler: src/index.default.authorizeSignedUrl
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Format: esm
+        OutExtension:
+          - .js=.mjs
+        Target: 'es2020'
+        Sourcemap: false
+        EntryPoints:
+          - src/index.js
+        External:
+          - 'aws-sdk'
+        Banner:
+          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
   CreateMixFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description: Create an audio mix
-      Handler: index.createAudioMix
+      Handler: src/index.default.createAudioMix
       Events:
         Post:
           Type: Api
@@ -149,12 +159,26 @@ Resources:
             QueueName: !GetAtt JobQueue.QueueName
         - S3ReadPolicy:
             BucketName: !Ref BucketName
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Format: esm
+        OutExtension:
+          - .js=.mjs
+        Target: 'es2020'
+        Sourcemap: false
+        EntryPoints:
+          - src/index.js
+        External:
+          - 'aws-sdk'
+        Banner:
+          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
   GetStatusFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description: Gets the status of the audio mix job
-      Handler: index.getAudioMixStatus
+      Handler: src/index.default.getAudioMixStatus
       Events:
         Get:
           Type: Api
@@ -167,12 +191,26 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref JobTable
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Format: esm
+        OutExtension:
+          - .js=.mjs
+        Target: 'es2020'
+        Sourcemap: false
+        EntryPoints:
+          - src/index.js
+        External:
+          - 'aws-sdk'
+        Banner:
+          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
   MixAudioFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description: Creates the mixed wav file
-      Handler: index.consumeJob
+      Handler: src/index.default.consumeJob
       MemorySize: 1024
       Timeout: 120
       Events:
@@ -196,6 +234,20 @@ Resources:
           LAME_BIN_PATH: /opt/bin/lame
           SOX_BIN_PATH: /opt/bin/sox
           FFPROBE_BIN_PATH: /opt/bin/ffprobe
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Format: esm
+        OutExtension:
+          - .js=.mjs
+        Target: 'es2020'
+        Sourcemap: false
+        EntryPoints:
+          - src/index.js
+        External:
+          - 'aws-sdk'
+        Banner:
+          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
   # ********************************* General Resources *********************************
   JobTable:
@@ -235,6 +287,7 @@ Resources:
   AudioBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Condition: CreateBucket
     Properties:
       # https://stackoverflow.com/questions/54897459/how-to-set-semi-random-name-for-s3-bucket-using-cloud-formation

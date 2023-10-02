@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-const { v4: createUuid } = require('uuid');
+const { randomUUID } = require('crypto');
 const crypto = require('crypto');
 const absoluteUrl = require('../lib/absolute-url');
 const parseBody = require('../lib/body-parser');
@@ -105,7 +105,7 @@ class AudioController {
     }
 
     // We're good. Store job
-    const uuid = createUuid();
+    const uuid = randomUUID();
 
     data.key = `${this.config.Storage.FolderPrefix}/${uuid}.wav`;
     data.getObjectUrl = this.di.getStorageService().createGetObjectUrl(data.key, data.filename);
