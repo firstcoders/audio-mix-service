@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1-beta.6](https://github.com/sound-ws/audio-mix-service/compare/@soundws/audio-mix-service@3.0.1-beta.5...@soundws/audio-mix-service@3.0.1-beta.6) (2023-10-02)
+
+**Note:** Version bump only for package @soundws/audio-mix-service
+
+
+
+
+
 ## [3.0.1-beta.5](https://github.com/sound-ws/audio-mix-service/compare/@soundws/audio-mix-service@3.0.1-beta.4...@soundws/audio-mix-service@3.0.1-beta.5) (2023-10-02)
 
 **Note:** Version bump only for package @soundws/audio-mix-service
