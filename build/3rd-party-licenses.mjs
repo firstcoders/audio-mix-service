@@ -32,24 +32,12 @@ await esbuild.build({
   platform: 'node',
 });
 
-copyFileSync(
-  'licenses/THIRD-PARTY-LICENSES.txt',
-  './.aws-sam/build/AuthSignedUrlFunction/THIRD-PARTY-LICENSES.txt',
-);
-
-copyFileSync(
-  './licenses/THIRD-PARTY-LICENSES.txt',
-  './.aws-sam/build/CreateMixFunction/THIRD-PARTY-LICENSES.txt',
-);
-
-copyFileSync(
-  './licenses/THIRD-PARTY-LICENSES.txt',
-  './.aws-sam/build/GetStatusFunction/THIRD-PARTY-LICENSES.txt',
-);
-
-copyFileSync(
-  './licenses/THIRD-PARTY-LICENSES.txt',
-  './.aws-sam/build/MixAudioFunction/THIRD-PARTY-LICENSES.txt',
+['AuthSignedUrlFunction', 'CreateMixFunction', 'GetStatusFunction', 'MixAudioFunction'].forEach(
+  (functionName) =>
+    copyFileSync(
+      'licenses/THIRD-PARTY-LICENSES.txt',
+      `./.aws-sam/build/${functionName}/THIRD-PARTY-LICENSES.txt`,
+    ),
 );
 
 rmSync('./licenses', { recursive: true });
