@@ -24,7 +24,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "THIRD-PARTY-LICENSES.txt"
   ],
   "engines": {
     "node": ">=16"
@@ -42,6 +43,8 @@
     "@babel/preset-env": "^7.22.20",
     "@babel/register": "^7.22.15",
     "assert": "^2.0.0",
+    "esbuild": "^0.19.4",
+    "esbuild-plugin-license": "^1.2.2",
     "eslint": "^8.50.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.0.0",
@@ -54,7 +57,8 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha test/spec/**/**/*.js",
-    "build": "sam build",
+    "build": "sam build && build:licenses",
+    "build:licenses": "node build/3rd-party-licenses.mjs",
     "qa": "eslint \"src/**/*.js\" && sam validate --lint",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
