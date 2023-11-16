@@ -24,10 +24,6 @@ Parameters:
     Type: String
     Description: The api gateway stage name
     Default: 'prd'
-    AllowedValues:
-      - dev
-      - uat
-      - prd
   SwsSecret:
     Type: String
     Description: The shared JWT secret used to authenticate to the service.
