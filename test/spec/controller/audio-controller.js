@@ -144,7 +144,9 @@ describe('Audio Controller', () => {
 
       // Test response
       assert.strictEqual(response.statusCode, 303);
-      assert(response.headers.Location.indexOf('https://www.sound.ws/get/it/here/status/') !== -1);
+      assert(
+        response.headers.Location.indexOf('https://www.sound.ws/get/it/here/mix/status/') !== -1,
+      );
       // assert.strictEqual(response.headers['Access-Control-Expose-Headers'], 'Location');
       // assert.strictEqual(response.headers['Access-Control-Allow-Origin'], '*');
       // assert.strictEqual(response.headers['Access-Control-Allow-Headers'], 'Authorization');

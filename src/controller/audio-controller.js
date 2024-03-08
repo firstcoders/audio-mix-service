@@ -122,7 +122,7 @@ class AudioController {
     return {
       statusCode: 303,
       headers: {
-        Location: this.signUrl(`/status/${uuid}`, job, event),
+        Location: this.signUrl(`/mix/status/${uuid}`, job, event),
       },
       body: JSON.stringify({
         message: 'Request accepted',
@@ -146,7 +146,7 @@ class AudioController {
         body: JSON.stringify({
           _retryIn: this.config.Job.PollDelay,
           // url to "self" since some xhr clients dont seem to be able to determine the eventual url of a redirected request
-          _url: this.signUrl(`/status/${uuid}`, job, event),
+          _url: this.signUrl(`/mix/status/${uuid}`, job, event),
           message: `The request is pending`,
           job: await js.serializeJob(job),
         }),
