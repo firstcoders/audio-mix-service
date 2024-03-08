@@ -82,8 +82,9 @@ describe('Audio Controller', () => {
       assert.strictEqual(response.statusCode, 303);
 
       assert(
-        response.headers.Location.indexOf('https://www.sound.ws/get/it/here/status/uuid?token=') !==
-          -1
+        response.headers.Location.indexOf(
+          'https://www.sound.ws/get/it/here/mix/status/uuid?token=',
+        ) !== -1,
       );
       // assert.strictEqual(response.headers['Access-Control-Expose-Headers'], 'Location');
       // assert.strictEqual(response.headers['Access-Control-Allow-Origin'], '*');
@@ -133,9 +134,9 @@ describe('Audio Controller', () => {
               v.metadata[0].value === 'My artist' &&
               typeof v.createdAt === 'number' &&
               typeof v.MD5OfMessageBody === 'string' &&
-              v.getObjectUrl === 'https://get.it.here.com'
-          )
-        )
+              v.getObjectUrl === 'https://get.it.here.com',
+          ),
+        ),
       );
 
       // Test the job is published
@@ -211,8 +212,8 @@ describe('Audio Controller', () => {
       // assert.strictEqual(response.headers['Access-Control-Allow-Origin'], '*');
       assert(
         response.body.indexOf(
-          '"message":"Something went wrong while processing your request. Please try again later."'
-        ) !== -1
+          '"message":"Something went wrong while processing your request. Please try again later."',
+        ) !== -1,
       );
       assert(response.body.indexOf('"job":{"uuid":"uuid"') !== -1);
     });
