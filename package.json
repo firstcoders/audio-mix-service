@@ -1,6 +1,6 @@
 {
   "name": "@soundws/audio-mix-service",
-  "version": "3.0.2",
+  "version": "3.0.3-beta.0",
   "description": "A microservice that mixes/merges multiple audio files into a single file with different volumes for each audio file",
   "license": "AGPL-3.0-or-later",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
