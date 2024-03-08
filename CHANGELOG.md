@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3-beta.1](https://github.com/sound-ws/audio-mix-service/compare/@soundws/audio-mix-service@3.0.3-beta.0...@soundws/audio-mix-service@3.0.3-beta.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* **audio-mix-service:** fixed basepaths ([ec19778](https://github.com/sound-ws/audio-mix-service/commit/ec19778e12f2132ebc3cabdd31e3b2613aa1d1ca))
+
+
+
+
+
 ## [3.0.3-beta.0](https://github.com/sound-ws/audio-mix-service/compare/@soundws/audio-mix-service@3.0.2...@soundws/audio-mix-service@3.0.3-beta.0) (2024-03-08)
 
 **Note:** Version bump only for package @soundws/audio-mix-service
