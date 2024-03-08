@@ -9,7 +9,7 @@ servers:
     description: An example endpoint
 
 paths:
-  /:
+  /mix:
     post:
       summary: Create an audio mix
       description: Merges multiple source audio (WAV) files with different volume settings
@@ -39,7 +39,7 @@ paths:
             application/json:
               schema:
                 '$ref': '#/components/schemas/MessageBody'
-  /status/{uuid}:
+  /mix/status/{uuid}:
     get:
       summary: Get the status of a request
       operationId: getAudioMixStatus

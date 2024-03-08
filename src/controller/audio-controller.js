@@ -96,7 +96,7 @@ class AudioController {
       return {
         statusCode: 303,
         headers: {
-          Location: this.signUrl(`/status/${duplicateJob.uuid}`, duplicateJob, event),
+          Location: this.signUrl(`/mix/status/${duplicateJob.uuid}`, duplicateJob, event),
         },
         body: JSON.stringify({
           message: 'Duplicate job found',

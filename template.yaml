@@ -146,7 +146,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ServiceApi
-            Path: /
+            Path: /mix
             Method: post
       Policies:
         - DynamoDBCrudPolicy:
@@ -180,7 +180,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ServiceApi
-            Path: /status/{uuid}
+            Path: /mix/status/{uuid}
             Method: get
             Auth:
               Authorizer: SignedUrlAuthorizer
