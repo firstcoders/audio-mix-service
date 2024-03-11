@@ -319,6 +319,24 @@ Outputs:
   ServiceApi:
     Description: 'API Gateway endpoint URL'
     Value: !Sub 'https://${ServiceApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/'
+  CreateMixFunctionArn:
+    Description: The ARN of the CreateMix function
+    Value: !GetAtt CreateMixFunction.Arn
+  CreateMixFunctionRoleArn:
+    Description: The ARN of the CreateMix function role
+    Value: !GetAtt CreateMixFunctionRole.Arn
+  GetStatusFunctionArn:
+    Description: The ARN of the GetStatus function
+    Value: !GetAtt GetStatusFunction.Arn
+  GetStatusFunctionRoleArn:
+    Description: The ARN of the GetStatus function role
+    Value: !GetAtt GetStatusFunctionRole.Arn
+  MixAudioFunctionArn:
+    Description: The ARN of the MixAudio function
+    Value: !GetAtt MixAudioFunction.Arn
+  MixAudioFunctionRoleArn:
+    Description: The ARN of the MixAudio function role
+    Value: !GetAtt MixAudioFunctionRole.Arn
 
 Metadata:
   AWS::ServerlessRepo::Application:
