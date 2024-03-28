@@ -37,10 +37,10 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
-    "@babel/eslint-parser": "^7.23.10",
+    "@babel/core": "^7.24.3",
+    "@babel/eslint-parser": "^7.24.1",
     "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.23.9",
+    "@babel/preset-env": "^7.24.3",
     "@babel/register": "^7.23.7",
     "assert": "^2.0.0",
     "esbuild": "^0.20.0",
