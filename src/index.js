@@ -39,6 +39,7 @@ const createHandler = async (Controller, method, event, context) => {
   try {
     config = await Config.load(event, context);
   } catch (ex) {
+    // eslint-disable-next-line no-console
     console.error('Failed to load config', { ex });
 
     // when dealing with authorizer we need a different response
