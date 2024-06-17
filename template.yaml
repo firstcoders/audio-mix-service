@@ -59,7 +59,7 @@ Globals:
     OpenApiVersion: 3.0.1
   Function:
     Timeout: 3
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
     MemorySize: 256
     Environment:
       Variables:
@@ -133,8 +133,8 @@ Resources:
         Sourcemap: false
         EntryPoints:
           - src/index.js
-        External:
-          - 'aws-sdk'
+        # External:
+        #   - 'aws-sdk'
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
@@ -167,8 +167,8 @@ Resources:
         Sourcemap: false
         EntryPoints:
           - src/index.js
-        External:
-          - 'aws-sdk'
+        # External:
+        #   - 'aws-sdk'
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
@@ -199,8 +199,8 @@ Resources:
         Sourcemap: false
         EntryPoints:
           - src/index.js
-        External:
-          - 'aws-sdk'
+        # External:
+        #   - 'aws-sdk'
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
@@ -242,8 +242,8 @@ Resources:
         Sourcemap: false
         EntryPoints:
           - src/index.js
-        External:
-          - 'aws-sdk'
+        # External:
+        #   - 'aws-sdk'
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
