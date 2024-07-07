@@ -1,12 +1,12 @@
 {
-  "name": "@soundws/audio-mix-service",
+  "name": "@firstcoders/audio-mix-service",
   "version": "3.0.3-beta.2",
   "description": "A microservice that mixes/merges multiple audio files into a single file with different volumes for each audio file",
   "license": "AGPL-3.0-or-later",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
   "email": "support@firstcoders.co.uk",
-  "bugs": "https://github.com/sound-ws/audio-mix-service/issues",
-  "homepage": "https://github.com/sound-ws/audio-mix-service",
+  "bugs": "https://github.com/firstcoders/audio-mix-service/issues",
+  "homepage": "https://github.com/firstcoders/audio-mix-service",
   "contributors": [
     {
       "name": "Mark Cremer",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/audio-mix-service.git"
+    "url": "https://github.com/firstcoders/audio-mix-service.git"
   },
   "files": [
     "src",

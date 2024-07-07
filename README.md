@@ -13,13 +13,13 @@ Installation of this service requires an AWS account and IAM credentials with ap
 # Installation
 
 ```shell
-npm install @soundws/audio-mix-service
+npm install @firstcoders/audio-mix-service
 ```
 
 or using yarn
 
 ```shell
-yarn add @soundws/audio-mix-service
+yarn add @firstcoders/audio-mix-service
 ```
 
 # Deployment
