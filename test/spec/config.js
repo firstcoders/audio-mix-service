@@ -34,7 +34,7 @@ describe('Config', () => {
         bucketName: 'g',
         expires: 1000,
         Endpoint: 'h',
-        FolderPrefix: 'sound-ws/audio-mix-srv/audio',
+        FolderPrefix: 'audio-mix-srv',
       },
       Uploads: { Timeout: 'i' },
       FfmpegBinPath: 'j',
