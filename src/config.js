@@ -63,7 +63,7 @@ module.exports = {
         bucketName: process.env.DEV_AUDIO_BUCKET_NAME || process.env.AUDIO_BUCKET_NAME,
         expires: 1000, // signed url expiration
         Endpoint: process.env.S3_ENDPOINT,
-        FolderPrefix: 'sound-ws/audio-mix-srv/audio',
+        FolderPrefix: process.env.S3_FOLDER_PREFIX || 'audio-mix-srv',
       },
       Uploads: {
         Timeout: process.env.UPLOADS_TIMEOUT || 0,

@@ -47,6 +47,10 @@ Parameters:
   AuthorizerArn:
     Type: String
     Description: The ARN of a lambda authorizer
+  S3FolderPrefix:
+    Type: String
+    Description: A prefix under which the generated files will be stored
+    Default: 'waveform-srv'
 
 Globals:
   # https://github.com/aws/serverless-application-model/issues/191
@@ -65,6 +69,7 @@ Globals:
         SWS_SECRET: !Ref SwsSecret
         SQS_JOB_QUEUE_URL: !Ref JobQueue
         CORS_ALLOWED_ORIGIN: !Ref CORSAllowedOrigins
+        S3_FOLDER_PREFIX: !Ref S3FolderPrefix
 
 Resources:
   ServiceApi:
