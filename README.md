@@ -10,26 +10,6 @@ A serverless microservice that mixes/merges multiple audio files into a single f
 
 Installation of this service requires an AWS account and IAM credentials with appropriate permissions.
 
-# Installation
-
-```shell
-npm install @firstcoders/audio-mix-service
-```
-
-or using yarn
-
-```shell
-yarn add @firstcoders/audio-mix-service
-```
-
-# Deployment
-
-Please refer to the AWS SAM documentation on how to deploy [AWS SAM applications](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-deploying.html)
-
-Refer to the `dist/template.yaml` file for information on the cloudformation deployment parameters.
-
-Note that deployment of this service depends on a lambda layer provided via the parameter `AudioToolsLayerArn`. Please refer to the `Audio Tools Lambda Layer` documentation.
-
 # TODO
 
 - rewrite in ESM
