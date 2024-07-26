@@ -55,7 +55,7 @@ class StemMixService {
     // Embed metadata
     // E.g. of metadata embedding ffmpeg -i input.wav -metadata title="mytitle" output.wav
     const { metadata = [] } = message;
-    metadata.push({ key: 'encoded_by', value: 'Sound Web Services' });
+    metadata.push({ key: 'encoded_by', value: 'firstcoders-audio-mix-service' });
 
     // https://github.com/nodejs/node/issues/34840
     const quote = (s) => `'${s.replace(/'/g, `'"'`)}'`;

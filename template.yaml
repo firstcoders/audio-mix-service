@@ -1,10 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  A microservice to give the Sound Web Services Stems Player mix and download powers.
-
-  Check out https://github.com/sound-ws/stems-player-documentation/wiki
-  for more information.
+Description: A microservice to downmix multiple audio files
 
 Conditions:
   CreateBucket: !Not [!Equals [!Ref ExistingBucket, true]]
@@ -348,6 +344,6 @@ Metadata:
     SpdxLicenseId: AGPL-3.0-or-later
     LicenseUrl: LICENSE
     Labels: ['layer', 'lambda', 'serverless', 'ffmpeg', 'amix']
-    HomePageUrl: https://github.com/sound-ws/audio-mix-service
-    SourceCodeUrl: https://github.com/sound-ws/audio-mix-service
+    HomePageUrl: https://github.com/firstcoders/audio-mix-service
+    SourceCodeUrl: https://github.com/firstcoders/audio-mix-service
     SemanticVersion: 1.0.0 # overwritten by sam publish cli command
