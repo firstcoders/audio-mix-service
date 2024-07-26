@@ -336,7 +336,7 @@ Outputs:
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: firstcoders-audio-mix-service
+    Name: fc-audio-mix-service
     Description: >
       A serverless microservice that mixes/merges multiple audio files into a single file with different volumes for each audio file.
     Author: Team First Coders
